@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#FEE500">
+  <title>케이크어위시 카카오톡 상담</title>
+  <meta name="description" content="케이크어위시 주문 사진, 문구, 시안확인, 변경 요청을 카카오톡 채널로 보내주세요.">
+  <style>
+    :root{
+      --gold:#b7924a;
+      --text:#202124;
+      --muted:#6b7280;
+      --line:#ececec;
+      --kakao:#FEE500;
+      --kakao-text:#191919;
+      --bg:#faf8f3;
+      --card:#ffffff;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
+      font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",
+      "Segoe UI",Roboto,Arial,sans-serif}
+    body{min-height:100vh;display:flex;justify-content:center}
+    .wrap{width:min(100%,520px);padding:28px 18px 42px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:22px;
+      padding:28px 22px;box-shadow:0 10px 30px rgba(0,0,0,.05)}
+    .brand{text-align:center;margin-bottom:24px}
+    .brand-mark{width:68px;height:68px;margin:0 auto 12px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;background:#fff8e8;
+      border:1px solid #ead9b5;font-size:34px}
+    .brand-name{font-size:24px;font-weight:800;letter-spacing:-.4px;margin:0}
+    .slogan{margin:6px 0 0;color:var(--gold);font-size:15px;font-weight:700}
+    h1{font-size:22px;line-height:1.35;margin:8px 0 12px;letter-spacing:-.45px}
+    .lead{font-size:16px;line-height:1.65;color:#444;margin:0 0 20px}
+    .info{background:#fbfbfb;border:1px solid var(--line);border-radius:16px;padding:16px 17px;margin:18px 0}
+    .info strong{display:block;margin-bottom:8px}
+    .info ol{padding-left:20px;margin:0;color:#444;line-height:1.75}
+    button,a.btn{width:100%;min-height:56px;border:none;border-radius:14px;
+      font-size:17px;font-weight:800;display:flex;align-items:center;justify-content:center;
+      text-decoration:none;cursor:pointer}
+    .primary{background:var(--kakao);color:var(--kakao-text);margin-top:18px}
+    .secondary{background:white;color:#333;border:1px solid #ddd;margin-top:10px}
+    .status{font-size:13px;line-height:1.55;color:var(--muted);text-align:center;margin-top:14px}
+    .fallback{margin-top:24px;padding-top:20px;border-top:1px solid var(--line);
+      font-size:14px;line-height:1.65;color:var(--muted)}
+    .fallback b{color:#333}
+    .warn{display:none;margin-top:14px;padding:12px 14px;border-radius:12px;
+      background:#fff3cd;color:#6a5200;font-size:13px;line-height:1.5}
+    footer{text-align:center;color:#999;font-size:12px;margin-top:18px}
+  </style>
+
+  <!--
+    Kakao JavaScript SDK.
+    운영 배포 시에는 Kakao Developers > JavaScript SDK 다운로드 페이지에서
+    최신 script 태그(Integrity 포함)를 복사해 아래 태그와 교체하는 것을 권장합니다.
+    현재 파일은 테스트가 쉽도록 2.8.3 경로를 사용합니다.
+  -->
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.8.3/kakao.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">🧚</div>
+        <p class="brand-name">케이크어위시</p>
+        <p class="slogan">make a wish, cake a wish!</p>
+      </div>
+
+      <h1>카카오톡으로 사진·문구를 보내주세요</h1>
+      <p class="lead">
+        주문 후 제작에 필요한 사진, 기본문구, 추가문구, 변경 요청사항,
+        시안확인 및 기타 문의를 케이크어위시 카카오톡 채널로 보내주세요.
+      </p>
+
+      <div class="info">
+        <strong>빠른 확인을 위해 함께 보내주세요.</strong>
+        <ol>
+          <li>주문하신 쇼핑몰</li>
+          <li>주문번호</li>
+          <li>주문자명 또는 수취인명</li>
+          <li>제작에 사용할 사진</li>
+          <li>기본문구·추가문구·변경 요청사항</li>
+        </ol>
+      </div>
+
+      <button id="chatBtn" class="primary" type="button">
+        💬 카카오톡으로 사진·문구 보내기
+      </button>
+
+      <button id="addBtn" class="secondary" type="button">
+        ＋ 케이크어위시 채널 추가하기
+      </button>
+
+      <div id="warn" class="warn"></div>
+
+      <p class="status">
+        카카오톡 앱 또는 카카오 계정 연결 화면이 열릴 수 있습니다.
+      </p>
+
+      <div class="fallback">
+        <b>버튼이 열리지 않는 경우</b><br>
+        카카오톡에서 <b>‘케이크어위시’</b>를 검색한 뒤 채팅으로 보내주세요.<br>
+        채널 ID: <b>@케이크어위시</b>
+      </div>
+    </section>
+
+    <footer>CAKE A WISH · 고객 제작정보 접수</footer>
+  </main>
+
+  <script>
+    // 1) Kakao Developers에서 발급받은 JavaScript 키로 교체하세요.
+    const KAKAO_JAVASCRIPT_KEY = "YOUR_KAKAO_JAVASCRIPT_KEY";
+
+    // 케이크어위시 카카오톡 채널 프로필 ID
+    const CHANNEL_PUBLIC_ID = "_Txghxkxj";
+
+    const chatBtn = document.getElementById("chatBtn");
+    const addBtn = document.getElementById("addBtn");
+    const warn = document.getElementById("warn");
+
+    function showWarning(message) {
+      warn.textContent = message;
+      warn.style.display = "block";
+    }
+
+    function initKakao() {
+      if (!window.Kakao) {
+        showWarning("카카오 연결 모듈을 불러오지 못했습니다. 잠시 후 다시 시도하거나 카카오톡에서 ‘케이크어위시’를 검색해 주세요.");
+        return false;
+      }
+
+      if (KAKAO_JAVASCRIPT_KEY === "YOUR_KAKAO_JAVASCRIPT_KEY" || !KAKAO_JAVASCRIPT_KEY) {
+        showWarning("설정 전 페이지입니다. 운영자가 Kakao Developers JavaScript 키를 등록해야 카카오톡 연결 버튼이 작동합니다.");
+        return false;
+      }
+
+      try {
+        if (!Kakao.isInitialized()) {
+          Kakao.init(KAKAO_JAVASCRIPT_KEY);
+        }
+        return Kakao.isInitialized();
+      } catch (e) {
+        console.error(e);
+        showWarning("카카오톡 연결 초기화에 실패했습니다. 등록한 도메인과 JavaScript 키를 확인해 주세요.");
+        return false;
+      }
+    }
+
+    chatBtn.addEventListener("click", function () {
+      if (!initKakao()) return;
+      try {
+        Kakao.Channel.chat({
+          channelPublicId: CHANNEL_PUBLIC_ID
+        });
+      } catch (e) {
+        console.error(e);
+        showWarning("채팅 연결에 실패했습니다. 카카오톡에서 ‘케이크어위시’를 검색해 주세요.");
+      }
+    });
+
+    addBtn.addEventListener("click", function () {
+      if (!initKakao()) return;
+      try {
+        Kakao.Channel.addChannel({
+          channelPublicId: CHANNEL_PUBLIC_ID
+        });
+      } catch (e) {
+        console.error(e);
+        showWarning("채널 추가 연결에 실패했습니다. 카카오톡에서 ‘케이크어위시’를 검색해 주세요.");
+      }
+    });
+  </script>
+</body>
+</html>
